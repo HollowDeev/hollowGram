@@ -119,9 +119,30 @@ const update = async(req, res) => {
 
 }
 
+const buscarPorId = async(req, res) => {
+    try{
+
+        const {id} = req.params;
+
+        const user = await User.findById(new mongoose.Types.ObjectId(id)).select("-senha");
+
+        //verificar se o usuario existe
+        if(!user){
+            res.status(400).json({errors: ["Usuario não encontrado"]})
+            return
+        }
+
+        res.status(200).json(user)
+
+    }catch (e) {
+        res.status(400).json({errors: ["Usuario não encontrado"]})
+    }
+}
+
 export {
     register,
     login,
     pegarDadosUsuarios,
-    update
+    update,
+    buscarPorId
 }
