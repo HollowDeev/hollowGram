@@ -5,8 +5,5 @@ const router = express();
 import userRoutes from "./UserRoutes.js";
 router.use('/api/users', userRoutes);
 
-// Rota de teste
-router.get('/', (req, res) => {
-    res.send('OLÁ MUNDO');
-})
+
 export default router;
