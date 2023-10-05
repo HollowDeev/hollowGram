@@ -13,7 +13,38 @@ const generateToken = (id) => {
 // Registrar e logar usuario
 
 const register = async(req, res) => {
-    res.send('registro')
+    const {nome, email, senha} = req.body;
+
+    // Verificacao se o usuario já existe
+    const user = await User.findOne({email});
+    if(user){
+        res.status(422).json({error: "Email já cadastrado"})
+        return
+    }
+
+    // Criptografia da senha
+    const salt = await bcrypt.genSalt();
+    const senhaCriptografada = await bcrypt.hash(senha, salt);
+
+    const objUsuario = {
+        nome,
+        email,
+        senha: senhaCriptografada
+    };
+
+    // Criacao do usuario
+    const novoUsuario = await User.create(objUsuario);
+
+    //Verificacao se o usuario foi criado com sucesso
+    if(!novoUsuario){
+        res.status(422).json({error: "Houve um erro no servidor, tente em alguns instantes"})
+    }
+
+    res.status(201).json({
+        _id: novoUsuario._id,
+        nome: novoUsuario.nome,
+        token: generateToken(novoUsuario._id)
+    })
 }
 
 export {
