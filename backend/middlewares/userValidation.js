@@ -1,6 +1,6 @@
 import {body} from 'express-validator';
 
-const userCreateValidation = () => {
+const validacaoCadastro = () => {
     return [
         body('nome')
             .isString()
@@ -29,7 +29,7 @@ const userCreateValidation = () => {
     ]
 }
 
-const userLoginValidation = () => {
+const validacaoLogin = () => {
     return [
         body('email')
             .isString()
@@ -42,7 +42,21 @@ const userLoginValidation = () => {
     ]
 }
 
+const validacaoUpdate = () => {
+    return [
+        body("name")
+            .optional()
+            .isLength({min: 3})
+            .withMessage("O nome precisa de pelo menos 3 caracteres"),
+        body("senha")
+            .optional()
+            .isLength({min: 6})
+            .withMessage("A senha precisa de pelo menos 6 caracteres")
+    ]
+}
+
 export {
-    userCreateValidation,
-    userLoginValidation
+    validacaoCadastro,
+    validacaoLogin,
+    validacaoUpdate
 }
