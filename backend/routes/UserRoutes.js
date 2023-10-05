@@ -2,12 +2,14 @@ import express from 'express';
 const router = express();
 
 // controller
-import {register} from '../controllers/UserController.js';
+import {register, login} from '../controllers/UserController.js';
 
 // middlewares
 import {handleValidation} from "../middlewares/handleValidation.js";
-import {userCreateValidation} from "../middlewares/userValidation.js";
+import {userCreateValidation, userLoginValidation} from "../middlewares/userValidation.js";
 
 router.post('/registrar', userCreateValidation(), handleValidation, register);
+
+router.post('/login', userLoginValidation(), handleValidation, login)
 
 export default router;
